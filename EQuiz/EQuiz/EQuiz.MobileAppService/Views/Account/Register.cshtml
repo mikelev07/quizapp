@@ -1,0 +1,51 @@
+﻿@page
+@model EQuiz.ViewModels.RegisterViewModel
+
+
+<main>
+    <div class="container">
+        <div class="row h-100">
+            <div class="col-12 col-md-10 mx-auto my-auto">
+                <div class="card auth-card">
+                    <div class="position-relative image-side ">
+                        <p class=" text-white h2">MAGIC IS IN THE DETAILS</p>
+                        <p class="white mb-0">
+                            Please use this form to register.
+                            <br>If you are a member, please
+                            <a href="#" class="white">login</a>.
+                        </p>
+                    </div>
+                    <div class="form-side">
+                        <a href="Dashboard.Default.html">
+                            <span class="logo-single"></span>
+                        </a>
+                        <h6 class="mb-4">Регистрация</h6>
+
+                        @using (Html.BeginForm("Register", "Account", FormMethod.Post, new {  }))
+                        {
+                            <label class="form-group has-float-label mb-4">
+                                <input name="Email" class="form-control" />
+                                <span>E-mail</span>
+                            </label>
+                            <label class="form-group has-float-label mb-4">
+                                <input name="Password" class="form-control" type="password" placeholder="" />
+                                <span>Пароль</span>
+                            </label>
+                            <label class="form-group has-float-label mb-4">
+                                <input name="PasswordConfirm" class="form-control" type="password" placeholder="" />
+                                <span>Повторите пароль</span>
+                            </label>
+                            <div class="d-flex justify-content-end align-items-center">
+                                <button class="btn btn-primary btn-lg btn-shadow" type="submit">Зарегистрироваться</button>
+                            </div>
+                        }
+
+
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+
