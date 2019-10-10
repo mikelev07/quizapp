@@ -10,7 +10,7 @@ using EQuiz.Models;
 using EQuiz.Views;
 using EQuiz.ViewModels;
 using System.Collections.ObjectModel;
-using Microsoft.EntityFrameworkCore.Query.Internal;
+
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace EQuiz.Views

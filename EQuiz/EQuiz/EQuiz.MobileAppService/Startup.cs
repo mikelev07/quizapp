@@ -8,6 +8,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Swashbuckle.AspNetCore.Swagger;
 using EQuiz.Models;
+using Microsoft.EntityFrameworkCore;
+using EQuiz.MobileAppService.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace EQuiz.MobileAppService
 {
@@ -23,13 +26,13 @@ namespace EQuiz.MobileAppService
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
-            services.AddSingleton<IItemRepository, ItemRepository>();
+            string connection = Configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<ApplicationContext>(options => options.UseSqlServer(connection));
 
-            services.AddSwaggerGen(c =>
-            {
-                c.SwaggerDoc("v1", new Info { Title = "My API", Version = "v1" });
-            });
+            services.AddIdentity<User, IdentityRole>()
+                .AddEntityFrameworkStores<ApplicationContext>();
+
+            services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
@@ -44,13 +47,15 @@ namespace EQuiz.MobileAppService
             }
 
             app.UseHttpsRedirection();
-            app.UseMvc();
-
-            app.UseSwagger();
-            app.UseSwaggerUI(c =>
+            app.UseStaticFiles();
+            app.UseAuthentication();
+            app.UseMvc(routes =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "My API V1");
+                routes.MapRoute(
+                    name: "default",
+                    template: "{controller=Home}/{action=Index}/{id?}");
             });
+
         }
     }
 }
