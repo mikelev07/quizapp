@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using EQuiz.MobileAppService.Models;
 using EQuiz.ViewModels;
@@ -9,6 +11,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using Newtonsoft.Json;
 
 namespace EQuiz.MobileAppService.Controllers
 {
@@ -34,6 +38,62 @@ namespace EQuiz.MobileAppService.Controllers
             public string Id { get; set; }
             public string Email { get; set; }
             public string NewPassword { get; set; }
+        }
+
+        [HttpPost("/token")]
+        public async Task Token()
+        {
+            var username = Request.Form["username"];
+            var password = Request.Form["password"];
+
+            var identity = GetIdentityAsync(username, password);
+            if (identity == null)
+            {
+                Response.StatusCode = 400;
+                await Response.WriteAsync("Invalid username or password.");
+                return;
+            }
+
+            var now = DateTime.UtcNow;
+            // создаем JWT-токен
+            var jwt = new JwtSecurityToken(
+                    issuer: AuthOptions.ISSUER,
+                   // audience: AuthOptions.AUDIENCE,
+                    notBefore: now,
+                    expires: now.Add(TimeSpan.FromMinutes(AuthOptions.LIFETIME)),
+                    signingCredentials: new SigningCredentials(AuthOptions.GetSymmetricSecurityKey(), SecurityAlgorithms.HmacSha256));
+            var encodedJwt = new JwtSecurityTokenHandler().WriteToken(jwt);
+
+            var response = new
+            {
+                access_token = encodedJwt,
+                username = identity.Result.Name
+            };
+
+            // сериализация ответа
+            Response.ContentType = "application/json";
+            await Response.WriteAsync(JsonConvert.SerializeObject(response, new JsonSerializerSettings { Formatting = Formatting.Indented }));
+        }
+
+        private async Task<ClaimsIdentity> GetIdentityAsync(string username, string password)
+        {
+            User person = await _userManager.FindByEmailAsync(username);
+            if (person != null)
+            {
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimsIdentity.DefaultNameClaimType, person.Email),
+                    // role
+                    new Claim(ClaimsIdentity.DefaultRoleClaimType, person.UserName)
+                };
+                ClaimsIdentity claimsIdentity =
+                new ClaimsIdentity(claims, "Token", ClaimsIdentity.DefaultNameClaimType,
+                    ClaimsIdentity.DefaultRoleClaimType);
+                return claimsIdentity;
+            }
+
+            // если пользователя не найдено
+            return null;
         }
 
         public async Task<IActionResult> ChangePassword(string id)
