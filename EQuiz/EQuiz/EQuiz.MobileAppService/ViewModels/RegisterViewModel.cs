@@ -4,6 +4,14 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EQuiz.ViewModels
 {
+
+    public class AnswerApiModel
+    {
+        public int Id { get; set; }
+        public string Name { get; set; }
+
+        public string QuestionName { get; set; }
+    }
     public class LoginViewModel
     {
         [Required]

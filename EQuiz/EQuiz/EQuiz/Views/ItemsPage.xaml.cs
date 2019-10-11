@@ -8,7 +8,7 @@ using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using EQuiz.Models;
 using EQuiz.Views;
-using EQuiz.ViewModels;
+
 using System.Collections.ObjectModel;
 
 using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
@@ -21,12 +21,14 @@ namespace EQuiz.Views
 
         private ObservableCollection<Models.Grouping<string, RadioOption>> RadioOptionsList = new ObservableCollection<Models.Grouping<string, RadioOption>>();
 
-
+        AnswerViewModel viewModel;
+     
         public ItemsPage()
         {
             InitializeComponent();
 
-           
+            viewModel = new AnswerViewModel();
+           // BindingContext = viewModel;
 
             Initialize();
         }
@@ -67,6 +69,7 @@ namespace EQuiz.Views
 
         private void Initialize()
         {
+            var list =  viewModel.GetFriends();
             // Build a list of items
             var items = new List<RadioOption>()
             {

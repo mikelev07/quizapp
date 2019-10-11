@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using EQuiz.MobileAppService.Models;
+using EQuiz.ViewModels;
 
 namespace EQuiz.MobileAppService.Controllers
 {
@@ -22,9 +23,19 @@ namespace EQuiz.MobileAppService.Controllers
 
         // GET: api/Answer
         [HttpGet]
-        public IEnumerable<Answer> GetAnswers()
+        public IEnumerable<AnswerApiModel> GetAnswers()
         {
-            return _context.Answers;
+            IQueryable<Answer> customViewModels = _context.Answers.Include(t => t.Question);
+            var items = from u in customViewModels
+                        select new AnswerApiModel
+                        {
+                            Id = u.Id,
+                            Name = u.Name,
+                            QuestionName = u.Question.Name
+
+                        };
+
+            return items;
         }
 
         // GET: api/Answer/5
