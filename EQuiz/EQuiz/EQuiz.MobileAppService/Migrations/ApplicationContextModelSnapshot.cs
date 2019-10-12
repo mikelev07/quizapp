@@ -102,6 +102,38 @@ namespace EQuiz.MobileAppService.Migrations
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("EQuiz.MobileAppService.Models.UserAnswer", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<int>("AnswerId");
+
+                    b.Property<int?>("UserTestId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserTestId");
+
+                    b.ToTable("UserAnswers");
+                });
+
+            modelBuilder.Entity("EQuiz.MobileAppService.Models.UserTest", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserTests");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
                     b.Property<string>("Id")
@@ -218,6 +250,20 @@ namespace EQuiz.MobileAppService.Migrations
                         .WithMany("Answers")
                         .HasForeignKey("QuestionId")
                         .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("EQuiz.MobileAppService.Models.UserAnswer", b =>
+                {
+                    b.HasOne("EQuiz.MobileAppService.Models.UserTest")
+                        .WithMany("Answers")
+                        .HasForeignKey("UserTestId");
+                });
+
+            modelBuilder.Entity("EQuiz.MobileAppService.Models.UserTest", b =>
+                {
+                    b.HasOne("EQuiz.MobileAppService.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

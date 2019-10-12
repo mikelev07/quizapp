@@ -94,14 +94,15 @@ namespace EQuiz.MobileAppService.Controllers
 
         // POST: api/Answer
         [HttpPost]
-        public async Task<IActionResult> PostAnswer([FromBody] Answer answer)
+        public async Task<IActionResult> PostAnswer([FromBody] UserTest answer)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            _context.Answers.Add(answer);
+            _context.UserTests.Add(answer);
+
             await _context.SaveChangesAsync();
 
             return Ok();

@@ -64,10 +64,10 @@ namespace EQuiz.Models
             Navigation.PopAsync();
         }
 
-        public async Task<IEnumerable<Answer>> GetFriends()
+        public async Task<List<Answer>> GetFriends()
         {
             IEnumerable<Answer> friends = await friendsService.Get();
-            return friends;
+            return friends.ToList();
         }
 
         public async Task<UserTest> CreateUserAnswers(UserTest answerObject)

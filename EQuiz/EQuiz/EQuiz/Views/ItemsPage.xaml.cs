@@ -86,9 +86,11 @@ namespace EQuiz.Views
         
         }
 
-        private void Initialize()
+        private async void  Initialize()
         {
-            var list =  viewModel.GetFriends();
+            List<Answer> list = await viewModel.GetFriends();
+
+            var a = list.FirstOrDefault();
             // Build a list of items
             var items = new List<RadioOption>()
             {
@@ -103,6 +105,15 @@ namespace EQuiz.Views
                 new RadioOption(7, RadioCategory.CategoryC,"Ты судак?", "БОранина"),
              
             };
+
+            for (var i = 0; i < items.Count; )
+            {
+                for (var j = 0; j < list.Count; j++)
+                {
+                    items[i].Title = list[j].Name;
+                    i++;
+                }
+            }
 
             var sorted = from item in items
                          group item by item.NameQuestion into radioGroups

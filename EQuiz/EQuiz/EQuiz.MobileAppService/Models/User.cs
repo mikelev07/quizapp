@@ -9,5 +9,12 @@ namespace EQuiz.MobileAppService.Models
     public class User : IdentityUser
     {
         public int Year { get; set; }
+        ICollection<UserAnswer> userAnswers { get; set; }
+
+        public User()
+        {
+            userAnswers = new List<UserAnswer>();
+        }
+
     }
 }

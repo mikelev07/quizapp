@@ -13,6 +13,26 @@ namespace EQuiz.MobileAppService.Models
         public int QuestionId { get; set; }
     }
 
+    public class UserTest
+    {
+        public int Id { get; set; }
+        public ICollection<UserAnswer> Answers { get; set; }
+        public User User { get; set; }
+        public string UserId { get; set; }
+        public UserTest()
+        {
+            Answers = new List<UserAnswer>();
+        }
+    }
+
+    public class UserAnswer
+    {
+        public int Id { get; set; }
+        
+        public int AnswerId { get; set; }
+      
+    }
+
 
     public class Question
     {
