@@ -69,35 +69,13 @@ namespace EQuiz.Models
             IEnumerable<Answer> friends = await friendsService.Get();
             return friends;
         }
-        private async void SaveFriend(object friendObject)
+
+        public async Task<UserTest> CreateUserAnswers(UserTest answerObject)
         {
-            Answer friend = friendObject as Answer;
-            if (friend != null)
-            {
-                IsBusy = true;
-                // редактирование
-                if (friend.Id > 0)
-                {
-                    Answer updatedFriend = await friendsService.Update(friend);
-                    // заменяем объект в списке на новый
-                    if (updatedFriend != null)
-                    {
-                        int pos = Answers.IndexOf(updatedFriend);
-                        Answers.RemoveAt(pos);
-                        Answers.Insert(pos, updatedFriend);
-                    }
-                }
-                // добавление
-                else
-                {
-                    Answer addedFriend = await friendsService.Add(friend);
-                    if (addedFriend != null)
-                        Answers.Add(addedFriend);
-                }
-                IsBusy = false;
-            }
-            Back();
+            UserTest answer = await friendsService.Add(answerObject);
+            return answer;
         }
+
         private async void DeleteFriend(object friendObject)
         {
             Answer friend = friendObject as Answer;

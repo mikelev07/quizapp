@@ -8,6 +8,7 @@ namespace EQuiz.Models
 {
     public class RadioOption : INotifyPropertyChanged
     {
+        public int Id { get; set; }
         public RadioCategory Category { get; }
         public string Title { get; }
         public string NameQuestion { get; }
@@ -26,8 +27,9 @@ namespace EQuiz.Models
             }
         }
 
-        public RadioOption(RadioCategory category,string nameQuest, string title, bool isSelected = false)
+        public RadioOption(int id ,RadioCategory category,string nameQuest, string title, bool isSelected = false)
         {
+            this.Id = id;
             this.NameQuestion = nameQuest;
             this.Category = category;
             this.Title = title;

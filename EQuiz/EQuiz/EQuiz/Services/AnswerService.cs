@@ -12,7 +12,7 @@ namespace EQuiz.Services
     class AnswerService
     {
 
-        const string Url = "https://localhost:44321/api/Answer/";
+        const string Url = "https://192.168.0.102:44321/api/answer";
         // настройка клиента
         private HttpClient GetClient()
         {
@@ -25,12 +25,20 @@ namespace EQuiz.Services
         public async Task<IEnumerable<Answer>> Get()
         {
             HttpClient client = GetClient();
-            string result = await client.GetStringAsync(Url);
+            string result = "";
+            try
+            {
+                 result = await client.GetStringAsync(Url);
+            }
+            catch (Exception e) // I would appreciate if i get more specific exception but, 
+            {
+                //deal with it 
+            }
             return JsonConvert.DeserializeObject<IEnumerable<Answer>>(result);
         }
 
  
-        public async Task<Answer> Add(Answer friend)
+        public async Task<UserTest> Add(UserTest friend)
         {
             HttpClient client = GetClient();
             var response = await client.PostAsync(Url,
@@ -41,7 +49,7 @@ namespace EQuiz.Services
             if (response.StatusCode != HttpStatusCode.OK)
                 return null;
 
-            return JsonConvert.DeserializeObject<Answer>(
+            return JsonConvert.DeserializeObject<UserTest>(
                 await response.Content.ReadAsStringAsync());
         }
      

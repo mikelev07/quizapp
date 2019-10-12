@@ -104,7 +104,7 @@ namespace EQuiz.MobileAppService.Controllers
             _context.Answers.Add(answer);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction("GetAnswer", new { id = answer.Id }, answer);
+            return Ok();
         }
 
         // DELETE: api/Answer/5
