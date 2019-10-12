@@ -23,7 +23,8 @@ namespace EQuiz.Views
 
         AnswerViewModel viewModel;
         List<UserAnswer> userAnswers;
-     
+       // public MainViewModel ViewModel { get; } = new MainViewModel(App.NavigationService);
+
         public ItemsPage()
         {
             InitializeComponent();
@@ -31,8 +32,13 @@ namespace EQuiz.Views
             viewModel = new AnswerViewModel();
             // BinuserAnswersdingContext = viewModel;
             userAnswers = new List<UserAnswer>();
+
+           // BindingContext = ViewModel;
+
             Initialize();
         }
+
+     
 
         public async void Handle_Clicked(object sender, EventArgs e)
         {

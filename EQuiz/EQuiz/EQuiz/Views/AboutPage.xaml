@@ -5,6 +5,11 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="EQuiz.Views.AboutPage">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Clicked="MenuItem_OnClicked" Text="Выйти" Priority="1" />
+    </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout>
             <Label Text="Личный кабинет"

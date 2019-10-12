@@ -12,7 +12,7 @@ namespace EQuiz.Services
     class AnswerService
     {
 
-        const string Url = "https://192.168.0.102:44321/api/answer";
+        const string Url = "http://gasprom.somee.com/api/answer";
         // настройка клиента
         private HttpClient GetClient()
         {

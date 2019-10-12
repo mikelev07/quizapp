@@ -31,6 +31,7 @@
 
     <!-- Your Pages -->
     <TabBar>
+        
         <Tab Title="Вопросы" Icon="tab_about.png">
             <ShellContent ContentTemplate="{DataTemplate local:ItemsPage}" />
         </Tab>

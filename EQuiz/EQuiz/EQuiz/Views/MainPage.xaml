@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="EQuiz.Views.MainPage"
+             Title="Hakuna Matata Solutions"
+             x:Name="musicPage"  BackgroundColor="Transparent" 
+             NavigationPage.HasBackButton="False">
+    <ContentPage.Content>
+        <AbsoluteLayout>
+            <FlexLayout IsVisible="True" JustifyContent="SpaceEvenly" Direction="Column" AlignItems="Center" Margin="30,0,30,0" >
+                <Image Source="hakuna.png" HeightRequest="140" WidthRequest="140" FlexLayout.AlignSelf="Center" BackgroundColor="Transparent" />
+                <Button x:Name="logIn" FontSize="Medium" BorderColor="Black" FlexLayout.AlignSelf="Stretch" CornerRadius="5"  Clicked="LoginButton_Clicked" HorizontalOptions="CenterAndExpand" Text="Войти в систему" TextColor="White" BackgroundColor="#3399ff"/>
+                <Label Text="or" FontSize="15" TextColor="DarkGray" BackgroundColor="Transparent" FlexLayout.AlignSelf="Center"/>
+               
+                <Label Text=""/>
+            </FlexLayout>
+        </AbsoluteLayout>
+    </ContentPage.Content>
+</ContentPage>

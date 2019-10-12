@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQuiz.Models;
+using System;
 using System.Collections.Generic;
 
 using Xamarin.Forms;
@@ -10,6 +11,13 @@ namespace EQuiz
         public AppShell()
         {
             InitializeComponent();
+          
         }
+
+       // public MainViewModel ViewModel { get; } = new MainViewModel(App.NavigationService);
+
+       
+
+
     }
 }

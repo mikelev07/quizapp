@@ -8,7 +8,7 @@
              x:Class="EQuiz.Views.ItemsPage"
              x:Name="BrowseItemsPage">
 
-
+   
     <ListView x:Name="ListView_Radio" ItemTapped="Handle_ItemTapped" ItemSelected="Handle_ItemSelected" IsGroupingEnabled="true" HasUnevenRows="true">
         <!-- Group Header -->
         <ListView.GroupHeaderTemplate>

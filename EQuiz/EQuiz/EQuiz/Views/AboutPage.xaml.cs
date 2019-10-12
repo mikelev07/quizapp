@@ -16,5 +16,17 @@ namespace EQuiz.Views
         {
             InitializeComponent();
         }
+        private async void MenuItem_OnClicked(object sender, EventArgs e)
+        {
+            await DisplayAlert("Выйти", "Вы хотите выйти?", "OK");
+            Page page = new LoginPage();
+           
+            await Navigation.PushAsync(new MainPage());
+            Application.Current.MainPage = new NavigationPage(new MainPage())
+            {
+                BackgroundColor = Color.White
+            }; 
+        }
+
     }
 }
