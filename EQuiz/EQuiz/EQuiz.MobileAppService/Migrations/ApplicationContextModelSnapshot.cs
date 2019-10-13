@@ -110,9 +110,13 @@ namespace EQuiz.MobileAppService.Migrations
 
                     b.Property<int>("AnswerId");
 
+                    b.Property<int?>("Raiting");
+
                     b.Property<int?>("UserTestId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
 
                     b.HasIndex("UserTestId");
 
@@ -258,6 +262,11 @@ namespace EQuiz.MobileAppService.Migrations
 
             modelBuilder.Entity("EQuiz.MobileAppService.Models.UserAnswer", b =>
                 {
+                    b.HasOne("EQuiz.MobileAppService.Models.Answer", "Answer")
+                        .WithMany()
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("EQuiz.MobileAppService.Models.UserTest")
                         .WithMany("Answers")
                         .HasForeignKey("UserTestId");

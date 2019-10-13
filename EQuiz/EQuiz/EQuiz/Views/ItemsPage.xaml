@@ -24,12 +24,9 @@
         <ListView.ItemTemplate>
             <DataTemplate>
                 <ViewCell>
-                    <StackLayout Orientation="Horizontal">
+                    <StackLayout Orientation="Vertical">
                         <Label Margin="14,10" Text="{Binding Title}" FontSize="Large" VerticalTextAlignment="Center" HorizontalOptions="Start"/>
-                        <Grid HorizontalOptions="EndAndExpand" Margin="14,0">
-                            <Label Text="○" FontSize="20" TextColor="{StaticResource MediumGray}" VerticalTextAlignment="Center"/>
-                            <Label Text="●" FontSize="20" TextColor="{StaticResource BrandColor}" IsVisible="{Binding IsSelected}" VerticalTextAlignment="Center" />
-                        </Grid>
+                        <Editor Text="{Binding Edit}"  BackgroundColor="#a5d6a7" HeightRequest="200" />
                     </StackLayout>
                 </ViewCell>
             </DataTemplate>

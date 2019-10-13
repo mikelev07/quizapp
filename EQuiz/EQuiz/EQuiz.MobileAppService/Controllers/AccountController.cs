@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using EQuiz.MobileAppService.Models;
 using EQuiz.ViewModels;
@@ -21,11 +22,17 @@ namespace EQuiz.MobileAppService.Controllers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
 
-        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager)
+        RoleManager<IdentityRole> _roleManager;
+
+        public AccountController(UserManager<User> userManager, SignInManager<User> signInManager, RoleManager<IdentityRole> _roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
+            this._roleManager = _roleManager;
         }
+
+        private Task<User> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
+
 
         [HttpGet]
         public IActionResult Login(string returnUrl = null)
@@ -216,6 +223,47 @@ namespace EQuiz.MobileAppService.Controllers
         }
 
 
+        public ActionResult CreateEmployee()
+        {
+            return View();
+        }
+
+        public string CreateRandomPassword()
+        {
+            return Password.Generate(12, 6);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<ActionResult> CreateEmployee(UserViewModel uvm)
+        {
+            uvm.Id = Guid.NewGuid().ToString();
+            if (ModelState.IsValid)
+            {
+                var userNew = await GetCurrentUserAsync();
+                var currentUserId = userNew?.Id;
+               
+          
+                var user = new User
+                {
+                    Id = uvm.Id,
+                    UserName = uvm.Email,
+                    Email = uvm.Email
+                };
+
+                var result = await _userManager.CreateAsync(user, uvm.Password);
+
+                if (result.Succeeded)
+                {
+                    await _userManager.AddToRoleAsync(user, "employee");
+                    return RedirectToAction("Home", "Index");
+                }
+            }
+
+            return View(uvm);
+        }
+
+
         [HttpGet]
         public IActionResult Register()
         {
@@ -228,9 +276,11 @@ namespace EQuiz.MobileAppService.Controllers
             {
                 User user = new User { Email = model.Email, UserName = model.Email, Year = model.Year };
                 // добавляем пользователя
+                
                 var result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
+                    await _userManager.AddToRoleAsync(user, "user");
                     // установка куки
                     await _signInManager.SignInAsync(user, false);
                     return RedirectToAction("Index", "Home");
@@ -244,6 +294,79 @@ namespace EQuiz.MobileAppService.Controllers
                 }
             }
             return View(model);
+        }
+    }
+
+    public static class Password
+    {
+        private static readonly char[] Punctuations = "!@#$%^&*()_-+=[{]};:>|./?".ToCharArray();
+
+        public static string Generate(int length, int numberOfNonAlphanumericCharacters)
+        {
+            if (length < 1 || length > 128)
+            {
+                throw new ArgumentException(nameof(length));
+            }
+
+            if (numberOfNonAlphanumericCharacters > length || numberOfNonAlphanumericCharacters < 0)
+            {
+                throw new ArgumentException(nameof(numberOfNonAlphanumericCharacters));
+            }
+
+            using (var rng = RandomNumberGenerator.Create())
+            {
+                var byteBuffer = new byte[length];
+
+                rng.GetBytes(byteBuffer);
+
+                var count = 0;
+                var characterBuffer = new char[length];
+
+                for (var iter = 0; iter < length; iter++)
+                {
+                    var i = byteBuffer[iter] % 87;
+
+                    if (i < 10)
+                    {
+                        characterBuffer[iter] = (char)('0' + i);
+                    }
+                    else if (i < 36)
+                    {
+                        characterBuffer[iter] = (char)('A' + i - 10);
+                    }
+                    else if (i < 62)
+                    {
+                        characterBuffer[iter] = (char)('a' + i - 36);
+                    }
+                    else
+                    {
+                        characterBuffer[iter] = Punctuations[i - 62];
+                        count++;
+                    }
+                }
+
+                if (count >= numberOfNonAlphanumericCharacters)
+                {
+                    return new string(characterBuffer);
+                }
+
+                int j;
+                var rand = new Random();
+
+                for (j = 0; j < numberOfNonAlphanumericCharacters - count; j++)
+                {
+                    int k;
+                    do
+                    {
+                        k = rand.Next(0, length);
+                    }
+                    while (!char.IsLetterOrDigit(characterBuffer[k]));
+
+                    characterBuffer[k] = Punctuations[rand.Next(0, Punctuations.Length)];
+                }
+
+                return new string(characterBuffer);
+            }
         }
     }
 }

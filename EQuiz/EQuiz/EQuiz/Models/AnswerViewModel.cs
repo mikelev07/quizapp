@@ -12,6 +12,31 @@ using Xamarin.Forms;
 
 namespace EQuiz.Models
 {
+
+    public class LoginViewModel
+    {
+        private LoginService loginService;
+        public string Username { get; set; }
+
+        public string Password { get; set; }
+
+
+
+
+        public ICommand LoginCommand
+        {
+            get
+            {
+                return new Command(async () =>
+                    {
+                       await loginService.LoginAsync(Username, Password);
+                    }
+                
+                );
+            }
+        }
+    }
+
    public class AnswerViewModel
    {
         bool initialized = false;   // была ли начальная инициализация

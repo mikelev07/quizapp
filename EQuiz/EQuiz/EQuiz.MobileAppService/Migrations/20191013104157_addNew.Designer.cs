@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQuiz.MobileAppService.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191012170159_usertesaa122")]
-    partial class usertesaa122
+    [Migration("20191013104157_addNew")]
+    partial class addNew
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -112,9 +112,13 @@ namespace EQuiz.MobileAppService.Migrations
 
                     b.Property<int>("AnswerId");
 
+                    b.Property<int?>("Raiting");
+
                     b.Property<int?>("UserTestId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AnswerId");
 
                     b.HasIndex("UserTestId");
 
@@ -260,6 +264,11 @@ namespace EQuiz.MobileAppService.Migrations
 
             modelBuilder.Entity("EQuiz.MobileAppService.Models.UserAnswer", b =>
                 {
+                    b.HasOne("EQuiz.MobileAppService.Models.Answer", "Answer")
+                        .WithMany()
+                        .HasForeignKey("AnswerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
                     b.HasOne("EQuiz.MobileAppService.Models.UserTest")
                         .WithMany("Answers")
                         .HasForeignKey("UserTestId");

@@ -12,7 +12,8 @@ namespace EQuiz.Models
         public RadioCategory Category { get; set; }
         public string Title { get; set; }
         public string NameQuestion { get; set; }
-
+           
+        public string Edit { get; set; }
         private bool _isSelected { get; set; }
         public bool IsSelected
         {

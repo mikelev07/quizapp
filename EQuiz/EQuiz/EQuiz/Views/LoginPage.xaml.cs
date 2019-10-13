@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQuiz.Services;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,7 +13,11 @@ namespace EQuiz.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class LoginPage : ContentPage
     {
-        
+
+        private LoginService loginService;
+        public string Username { get; set; }
+        public string Password { get; set; }
+
         public LoginPage()
         {
             InitializeComponent();
@@ -56,7 +61,9 @@ namespace EQuiz.Views
             
             if (userNameEntry.Text != null && passwordEntry.Text != null)
             {
-                var validData = true;
+                loginService = new LoginService();
+                var result = loginService.LoginAsync(userNameEntry.Text, passwordEntry.Text).Result;
+                var validData = result;
                 if (validData)
                 {
                     popupLoadingView.IsVisible = false;
@@ -66,13 +73,13 @@ namespace EQuiz.Views
                 else
                 {
                     popupLoadingView.IsVisible = false;
-                    await DisplayAlert("Login Failed", "Username or Password Incorrect", "OK");
+                    await DisplayAlert("Login Failed", "Почта или Пароль неверные", "OK");
                 }
             }
             else
             {
                 popupLoadingView.IsVisible = false;
-                await DisplayAlert("He He", "Enter User Name and Password Please", "OK");
+                await DisplayAlert("He He", "Введите Почту и Пароль", "OK");
             }
         }
     }

@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -9,6 +10,35 @@ using System.Threading.Tasks;
 
 namespace EQuiz.Services
 {
+
+    class LoginService
+    {
+        public async Task<bool> LoginAsync(string username, string password)
+        {
+            var keyvalues = new List<KeyValuePair<string, string>>
+            {
+                new KeyValuePair<string, string>("username", username),
+                new KeyValuePair<string, string>("password", password),
+                new KeyValuePair<string, string>("grant_type", "password")
+            };
+
+            var request = new HttpRequestMessage(HttpMethod.Post, "http://gasprom.somee.com/token");
+
+            request.Content = new FormUrlEncodedContent(keyvalues);
+
+            var client = new HttpClient();
+            var response =  client.SendAsync(request);
+
+            var content = await response.Result.Content.ReadAsStringAsync();
+            var isAuth = content != null;
+
+            return isAuth;
+
+        }
+     
+
+    }
+
     class AnswerService
     {
 

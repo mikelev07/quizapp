@@ -5,11 +5,42 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              mc:Ignorable="d"
              x:Class="EQuiz.Views.UserTestDetailPage">
-    <ContentPage.Content>
-        <StackLayout Spacing="20" Padding="15">
-            <Label Text="Text:" FontSize="Medium" />
-            <Label Text="{Binding Item.Text}" d:Text="Item name" FontSize="Small"/>
-      
-        </StackLayout>
-    </ContentPage.Content>
+ 
+
+            <ListView x:Name="ListView_Radio" ItemTapped="Handle_ItemTapped" ItemSelected="Handle_ItemSelected" IsGroupingEnabled="true" HasUnevenRows="true">
+                <!-- Group Header -->
+                <ListView.GroupHeaderTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout BackgroundColor="{StaticResource MediumGray}">
+                                <Label Margin="14,0" Text="{Binding Key}" FontSize="Large" VerticalOptions="CenterAndExpand"/>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.GroupHeaderTemplate>
+                <!--- Item Template -->
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <ViewCell>
+                            <StackLayout Orientation="Horizontal">
+                                <Label Margin="14,10" Text="{Binding Title}" FontSize="Large" VerticalTextAlignment="Center" HorizontalOptions="Start"/>
+                                <Grid HorizontalOptions="EndAndExpand" Margin="14,0">
+                                    <Label Text="○" FontSize="20" TextColor="{StaticResource MediumGray}" VerticalTextAlignment="Center"/>
+                                    <Label Text="●" FontSize="20" TextColor="{StaticResource BrandColor}" IsVisible="{Binding IsSelected}" VerticalTextAlignment="Center" />
+                                </Grid>
+                            </StackLayout>
+                        </ViewCell>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <!-- Footer -->
+
+                <ListView.Footer>
+                    <StackLayout Margin="10,15">
+                        <Button Text="Закончить тест" HorizontalOptions="Center" WidthRequest="150" Clicked="Handle_Clicked"/>
+                    </StackLayout>
+                </ListView.Footer>
+            </ListView>
+
+
 </ContentPage>

@@ -73,12 +73,12 @@ namespace EQuiz.Views
                     foreach (var s in group.Where(x => x.IsSelected))
                     {
                         s.IsSelected = false;
-                        var elem = userAnswers.Where(t => t.AnswerId == s.Id).SingleOrDefault();
-                        userAnswers.Remove(elem);
+                       // var elem = userAnswers.Where(t => t.AnswerId == s.Id).SingleOrDefault();
+                       // userAnswers.Remove(elem);
                     }
 
-                    UserAnswer resultAnswer = new UserAnswer() { AnswerId = item.Id, QuestionId = 1 };
-                    userAnswers.Add(resultAnswer);
+                   // UserAnswer resultAnswer = new UserAnswer() { AnswerId = item.Id, QuestionId = 1 };
+                    //userAnswers.Add(resultAnswer);
                     item.IsSelected = true;
                 }
                

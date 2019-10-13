@@ -13,6 +13,8 @@ namespace EQuiz.MobileAppService.Models
         public DbSet<Question> Questions { get; set; }
 
         public DbSet<UserTest> UserTests { get; set; }
+
+        public DbSet<Test> Tests { get; set; }
         public DbSet<UserAnswer> UserAnswers { get; set; }
 
         public ApplicationContext(DbContextOptions<ApplicationContext> options)
