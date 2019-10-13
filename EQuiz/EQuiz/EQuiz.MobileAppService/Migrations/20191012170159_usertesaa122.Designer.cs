@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQuiz.MobileAppService.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20191012145719_new112")]
-    partial class new112
+    [Migration("20191012170159_usertesaa122")]
+    partial class usertesaa122
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -126,6 +126,10 @@ namespace EQuiz.MobileAppService.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Title");
 
                     b.Property<string>("UserId");
 

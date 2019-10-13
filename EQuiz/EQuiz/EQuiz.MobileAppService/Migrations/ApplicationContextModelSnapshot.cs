@@ -125,6 +125,10 @@ namespace EQuiz.MobileAppService.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<string>("Description");
+
+                    b.Property<string>("Title");
+
                     b.Property<string>("UserId");
 
                     b.HasKey("Id");

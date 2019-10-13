@@ -35,8 +35,8 @@
         <Tab Title="Вопросы" Icon="tab_about.png">
             <ShellContent ContentTemplate="{DataTemplate local:ItemsPage}" />
         </Tab>
-        <Tab Title="Дашборд" Icon="tab_feed.png">
-            <ShellContent ContentTemplate="{DataTemplate local:AboutPage}" />
+        <Tab Title="Оценка" Icon="tab_feed.png">
+            <ShellContent ContentTemplate="{DataTemplate local:UserTestsPage}" />
         </Tab>
     </TabBar>
 

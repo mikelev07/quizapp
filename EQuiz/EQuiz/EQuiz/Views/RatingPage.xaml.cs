@@ -1,31 +1,26 @@
-﻿using System;
-using System.ComponentModel;
+﻿using EQuiz.Models;
+using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
-using EQuiz.Models;
-using EQuiz.Views;
-
-using System.Collections.ObjectModel;
-
-using Xamarin.Forms.PlatformConfiguration.iOSSpecific;
 
 namespace EQuiz.Views
 {
- 
-    public partial class ItemsPage : ContentPage
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public partial class RatingPage : ContentPage
     {
-
         private ObservableCollection<Models.Grouping<string, RadioOption>> RadioOptionsList = new ObservableCollection<Models.Grouping<string, RadioOption>>();
 
         AnswerViewModel viewModel;
         List<UserAnswer> userAnswers;
-       // public MainViewModel ViewModel { get; } = new MainViewModel(App.NavigationService);
+        // public MainViewModel ViewModel { get; } = new MainViewModel(App.NavigationService);
 
-        public ItemsPage()
+        public RatingPage()
         {
             InitializeComponent();
 
@@ -33,28 +28,27 @@ namespace EQuiz.Views
             // BinuserAnswersdingContext = viewModel;
             userAnswers = new List<UserAnswer>();
 
-           // BindingContext = ViewModel;
+            // BindingContext = ViewModel;
 
             Initialize();
         }
 
-     
+
 
         public async void Handle_Clicked(object sender, EventArgs e)
         {
             await this.DisplayAlert("", "Ваш выбор сохранен (нет)", "OK");
 
             var userTest = new UserTest();
-           
+
             userTest.Answers = userAnswers;
-            userTest.Title = "Ответы пользователя №1";
 
             await viewModel.CreateUserAnswers(userTest);
         }
 
         public void Handle_ItemSelected(object sender, SelectedItemChangedEventArgs e)
         {
-            
+
             ListView_Radio.SelectedItem = null;
         }
 
@@ -65,7 +59,7 @@ namespace EQuiz.Views
             if (item == null)
                 return;
 
-        
+
             foreach (var group in RadioOptionsList)
             {
                 if (group.Contains(item))
@@ -81,13 +75,13 @@ namespace EQuiz.Views
                     userAnswers.Add(resultAnswer);
                     item.IsSelected = true;
                 }
-               
+
             }
 
-        
+
         }
 
-        private async void  Initialize()
+        private async void Initialize()
         {
             List<Answer> list = await viewModel.GetFriends();
 
@@ -95,32 +89,27 @@ namespace EQuiz.Views
             // Build a list of items
             var items = new List<RadioOption>()
             {
-                new RadioOption(1, RadioCategory.CategoryA,"Ты дурак?", "Чо куришь?"),
-                new RadioOption(2, RadioCategory.CategoryA,"Ты дурак?", "Оранжевый"),
-                new RadioOption(3, RadioCategory.CategoryA,"Ты дурак?", "Ну нахер"),
+                new RadioOption(1, RadioCategory.CategoryA,"Ты дурак?", "1"),
+                new RadioOption(2, RadioCategory.CategoryA,"Ты дурак?", "2"),
+                new RadioOption(3, RadioCategory.CategoryA,"Ты дурак?", "3"),
+                new RadioOption(3, RadioCategory.CategoryA,"Ты дурак?", "4"),
+                new RadioOption(3, RadioCategory.CategoryA,"Ты дурак?", "5"),
 
-                new RadioOption(4, RadioCategory.CategoryB,"Ты мудак?", "Marvel"),
-                new RadioOption(5, RadioCategory.CategoryB,"Ты мудак?", "DC"),
+                new RadioOption(4, RadioCategory.CategoryB,"Ты мудак?", "4"),
+                new RadioOption(5, RadioCategory.CategoryB,"Ты мудак?", "5"),
 
-                new RadioOption(6, RadioCategory.CategoryC,"Ты судак?", "Курица"),
-                new RadioOption(7, RadioCategory.CategoryC,"Ты судак?", "БОранина"),
-             
+                new RadioOption(6, RadioCategory.CategoryC,"Ты судак?", "6"),
+                new RadioOption(7, RadioCategory.CategoryC,"Ты судак?", "7"),
+
             };
 
-            for (var i = 0; i < items.Count; )
-            {
-                for (var j = 0; j < list.Count; j++)
-                {
-                    items[i].Title = list[j].Name;
-                    i++;
-                }
-            }
+           
 
             var sorted = from item in items
                          group item by item.NameQuestion into radioGroups
                          select new Models.Grouping<string, RadioOption>(radioGroups.Key.ToString(), radioGroups);
 
-      
+
             RadioOptionsList = new ObservableCollection<Models.Grouping<string, RadioOption>>(sorted);
             ListView_Radio.ItemsSource = RadioOptionsList;
         }
